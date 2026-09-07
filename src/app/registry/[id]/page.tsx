@@ -22,7 +22,7 @@ export default async function PropertyDetailPage({
 
   if (!property) notFound();
   const user = await getCurrentUser();
-  const canEdit = can(user?.role, "edit");
+  const _canEdit = can(user?.role, "edit");
 
   const rows = [
     ["Organizational Code", property.organizationCode],

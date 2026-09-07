@@ -103,7 +103,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const signedIn = await prisma.user.update({
+  const _signedIn = await prisma.user.update({
     where: { id: user.id },
     data: {
       failedAttempts: 0,
