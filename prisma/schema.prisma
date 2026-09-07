@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String     @id @default(cuid())
+  username       String     @unique
+  email          String     @unique
+  passwordHash   String
+  fullName       String
+  role           String
+  office         String?
+  active         Boolean    @default(true)
+  failedAttempts Int        @default(0)
+  lockedUntil    DateTime?
+  lastLoginAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  auditLogs      AuditLog[]
+
+  @@index([role])
+  @@index([active])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  username  String?
+  action    String
+  entity    String?
+  entityId  String?
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([action])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model Region {
+  id         String     @id @default(cuid())
+  code       String     @unique
+  name       String
+  provinces  Province[]
+  properties Property[]
+}
+
+model Province {
+  id         String     @id @default(cuid())
+  code       String
+  name       String
+  regionId   String
+  region     Region     @relation(fields: [regionId], references: [id], onDelete: Cascade)
+  properties Property[]
+
+  @@unique([code, regionId])
+}
+
+model MasterOption {
+  id        String   @id @default(cuid())
+  category  String
+  code      String?
+  label     String
+  metadata  String?
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([label])
+}
+
+model Property {
+  id String @id @default(cuid())
+
+  organizationCode String       @default("350460000000")
+  propertyKind     String
+  assetType        String
+  accountCode      String?
+
+  assetName        String
+  assetDescription String?
+
+  regionId   String?
+  provinceId String?
+  region     Region?   @relation(fields: [regionId], references: [id])
+  province   Province? @relation(fields: [provinceId], references: [id])
+
+  cityMunicipality String?
+  barangay         String?
+  streetName       String?
+  subdivisionPurok String?
+  houseLotBlockNo  String?
+  latitude         Float?
+  longitude        Float?
+
+  gisGeometryType String  @default("POINT")
+  gisGeometry     String?
+  cezPhase        String?
+  cezBlock        String?
+  cezLot          String?
+
+  owner                       String?
+  withImpediments             Boolean?
+  impedimentDetails           String?
+  modeOfAcquisitionConveyance String?
+  acquisitionConveyanceInfo   String?
+  dateOfAcquisition           DateTime?
+  donorSellerTransferor       String?
+  doneeBuyerTransferee        String?
+  structureLandOwnedByAgency  Boolean?
+  landTctTdAvailable          Boolean?
+  tctTdNumber                 String?
+
+  currency                 String?   @default("PHP")
+  acquisitionCost          Float?    @default(0)
+  accumulatedDepreciation  Float?    @default(0)
+  netBookValue             Float?    @default(0)
+  assetLifeYears           Int?
+  numberOfYearsUsed        Int?
+  soundMarketValueCurrency String?   @default("PHP")
+  soundMarketValueAmount   Float?    @default(0)
+  dateOfValuation          DateTime?
+  improvementValueCurrency String?   @default("PHP")
+  improvementValueAmount   Float?    @default(0)
+  latestImprovementDate    DateTime?
+  appraisedValueCurrency   String?   @default("PHP")
+  appraisedValueAmount     Float?    @default(0)
+  dateOfAppraisal          DateTime?
+  assessedValueCurrency    String?   @default("PHP")
+  assessedValueAmount      Float?    @default(0)
+  dateOfAssessment         DateTime?
+  replacementValueCurrency String?   @default("PHP")
+  replacementValueAmount   Float?    @default(0)
+  modeOfDisposal           String?
+  disposalInfo             String?
+  dateOfDisposal           DateTime?
+  disposalValue            Float?    @default(0)
+
+  isInsured             Boolean?
+  policyType            String?
+  policyTypeOther       String?
+  totalCoverageCurrency String?   @default("PHP")
+  totalCoverageAmount   Float?    @default(0)
+  totalPremiumCurrency  String?   @default("PHP")
+  totalPremiumAmount    Float?    @default(0)
+  periodFrom            DateTime?
+  periodTo              DateTime?
+  insurerName           String?
+  issuingBranch         String?
+  insuredName           String?
+  policyNumber          String?
+  nonInsurableCurrency  String?   @default("PHP")
+  nonInsurableValue     Float?    @default(0)
+
+  assetCondition            String?
+  agencyAssetClassification String?
+  annualAverageOccupants    Int?
+  structureMaterial         String?
+  structureMaterialOther    String?
+  numberOfFireExtinguishers Int?
+  numberOfSprinklers        Int?
+  numberOfFireHose          Int?
+  floodDefence              String?
+  floodDefenceOther         String?
+  floorLotAreaSqm           Float?
+  landClassification        String?
+  landClassificationOther   String?
+  securityType              String?
+  securityTypeOther         String?
+
+  remarks String?
+
+  generalInfoJson   String?
+  locationInfoJson  String?
+  legalInfoJson     String?
+  financialInfoJson String?
+  insuranceInfoJson String?
+  technicalInfoJson String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyKind])
+  @@index([assetName])
+  @@index([organizationCode])
+  @@index([regionId])
+  @@index([provinceId])
+}

@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --peza-blue-950: #061b49;
+  --peza-blue-900: #082664;
+  --peza-blue-700: #0c43a8;
+  --peza-cyan: #14b8e6;
+  --peza-red: #d40000;
+  --peza-gold: #facc15;
+  --gov-ink: #09111f;
+  --gov-muted: #64748b;
+  --gov-line: #d7deea;
+  --gov-surface: #f8fafc;
+  --radius-xl: 1.25rem;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --font-geist-sans: "Geist", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 230, 0.14), transparent 32rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 48%, #eef4ff 100%);
+  color: var(--gov-ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--peza-blue-700);
+  color: white;
+}
+
+.gov-grid {
+  background-image:
+    linear-gradient(rgba(8, 38, 100, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 38, 100, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(215, 222, 234, 0.85);
+  box-shadow: 0 24px 80px rgba(6, 27, 73, 0.12);
+}
+
+.report-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 11px;
+  background: white;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #000;
+  padding: 4px 6px;
+  vertical-align: middle;
+}
+
+.report-blue {
+  background: #bdd7ee;
+}
+
+.report-green {
+  background: #e2f0d9;
+}
+
+.report-yellow {
+  background: #fff2cc;
+}
+
+.report-orange {
+  background: #f4b183;
+}
+
+.report-pink {
+  background: #ead1dc;
+}
+
+.peza-marker {
+  background: transparent;
+  border: 0;
+}
+
+.leaflet-container {
+  font-family: inherit;
+  background: #0b1b3a;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(6, 27, 73, 0.2);
+}
+
+.leaflet-popup-content {
+  margin: 14px 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  .no-print,
+  aside,
+  header.no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-sheet {
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+}
